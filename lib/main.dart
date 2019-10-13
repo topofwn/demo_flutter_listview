@@ -1,7 +1,6 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
-import 'childItem.dart';
+
+import 'Book.dart';
 
 void main() => runApp(Home());
 
@@ -23,6 +22,7 @@ class MyApp extends StatefulWidget {
 class MyAppState extends State<MyApp> {
   MyAppState();
   final listLength = 90;
+  var _listBook = <Book>[];
 
   @override
   Widget build(BuildContext context) {
@@ -42,13 +42,25 @@ class MyAppState extends State<MyApp> {
       body: new ListView.builder(
         itemCount: listLength,
         itemBuilder: (BuildContext context, int i) {
-          return ItemChild(context, i);
+          return _buildRow(i);
         },
       ),
     );
   }
 
+  Widget _buildRow(int key) {
+    return new ListTile(
+      leading: new CircleAvatar(
+        backgroundColor: Colors.green.shade300,
+        backgroundImage: new NetworkImage(_listBook[key].avatar),
+      ),
+      title: new Text(_listBook[key].name),
+      subtitle: new Text(_listBook[key].author),
+    );
+  }
 
-
+  _loadData() {
+      
+  }
 }
 
