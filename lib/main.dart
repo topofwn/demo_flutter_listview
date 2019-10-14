@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_app/addScreen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'Book.dart';
 
 void main() => runApp(Home());
@@ -21,8 +22,9 @@ class MyApp extends StatefulWidget {
 }
 class MyAppState extends State<MyApp> {
   MyAppState();
+  final databaseReference = Firestore.instance;
   final listLength = 90;
-  var _listBook = <Book>[];
+   List<Book> _listBook = new List();
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +37,12 @@ class MyAppState extends State<MyApp> {
               Icons.add,
               color: Colors.redAccent,
             ),
-            onPressed: null
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AddPage()),
+              );
+            }
         ),
         backgroundColor: Colors.lightBlueAccent,
       ),
@@ -60,7 +67,21 @@ class MyAppState extends State<MyApp> {
   }
 
   _loadData() {
-      
+    databaseReference.collection("Book").getDocuments()
+                      .then((QuerySnapshot snapshot) {
+                      snapshot.documents.forEach(
+                          (f) => _listBook.add(Book.fromSnapShot(f))
+
+                      );
+    });
   }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+
 }
 
