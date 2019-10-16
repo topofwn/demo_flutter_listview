@@ -24,23 +24,23 @@ class MyAppState extends State<MyApp> {
   MyAppState();
   final databaseReference = Firestore.instance;
   final listLength = 90;
-//   List<Book> _listBook = new List();
+   var _listBook = [];
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("Welcome to demo app",
+      appBar: AppBar(
+        title: Text("Welcome to demo app",
           style: TextStyle(
-              color: Colors.redAccent,
-              fontSize: 18.0,
+              color: Colors.red.shade500,
+              fontSize: 23.0,
           ),
         ),
         leading: new IconButton(
             icon: new Icon(
               Icons.add,
-              color: Colors.redAccent,
+              color: Colors.red.shade500,
             ),
             onPressed: () {
               Navigator.push(
@@ -53,41 +53,53 @@ class MyAppState extends State<MyApp> {
         centerTitle: true,
         backgroundColor: Colors.lightBlueAccent,
       ),
-//      body: new ListView.builder(
-//        itemCount: listLength,
-//        itemBuilder: (BuildContext context, int i) {
-//          return _buildRow(i);
-//        },
-//      ),
+      body: new ListView.builder(
+        padding: const EdgeInsets.symmetric(
+          vertical: 15.0,
+          horizontal: 40.0,
+        ),
+        itemCount: _listBook.length,
+        itemBuilder: (BuildContext context, int i) {
+          if (i.isOdd) return Divider();
+          return _buildRow(i);
+        },
+      ),
     );
   }
 
-//  Widget _buildRow(int key) {
-//    return new ListTile(
-//      leading: new CircleAvatar(
-//        backgroundColor: Colors.green.shade300,
-//        backgroundImage: new NetworkImage(_listBook[key].avatar),
-//      ),
-//      title: new Text(_listBook[key].name),
-//      subtitle: new Text(_listBook[key].author),
-//    );
-//  }
-//
-//  _loadData() {
-//    databaseReference.collection("Book").getDocuments()
-//                      .then((QuerySnapshot snapshot) {
-//                      snapshot.documents.forEach(
-//                          (f) => _listBook.add(Book.fromSnapShot(f))
-//
-//                      );
-//    });
-//  }
-//
-//  @override
-//  void initState() {
-//    super.initState();
-//    _loadData();
-//  }
+  Widget _buildRow(int key) {
+    return new ListTile(
+      leading: CircleAvatar(
+        backgroundColor: Colors.green.shade300,
+        backgroundImage: AssetImage('assets/baseline_replay_black_24pt_2x.png'),
+      ),
+      title: Text(
+          _listBook[key].name,
+          style: TextStyle(
+            fontSize: 20.0,
+          ),
+      ),
+      subtitle: Text(
+          _listBook[key].author,
+          style: TextStyle(
+            fontSize: 18.0,
+            fontStyle: FontStyle.italic,
+          ),
+      ),
+    );
+  }
+
+  _loadData() {
+    setState(() => {
+      databaseReference.collection("Book").
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
 
 
 }
